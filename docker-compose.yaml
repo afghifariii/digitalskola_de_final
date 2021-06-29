@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+    postgres:
+        image: postgres:13.2
+        environment:
+            - POSTGRES_USER=digitalskola
+            - POSTGRES_PASSWORD=digitalskola
+            - POSTGRES_DB=digitalskola
+        logging:
+            options:
+                max-size: 10m
+                max-file: "3"
+        volumes:
+            - ./sql:/docker-entrypoint-initdb.d/
+        healthcheck:
+            test: ["CMD", "pg_isready", "-U", "digitalskola"]
+            interval: 5s
+            retries: 5
+        restart: always
